@@ -1,0 +1,17 @@
+:root { color-scheme: dark; font-family: system-ui, sans-serif; }
+body { margin: 0; background: #0f1115; color: #e8eaf0; }
+main { max-width: 640px; margin: 0 auto; padding: 24px 16px 64px; }
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+h1 { font-size: 22px; margin: 0; }
+h2 { font-size: 17px; margin: 0 0 12px; }
+.card { background: #181b22; border: 1px solid #2a2f3a; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+input, textarea { width: 100%; box-sizing: border-box; background: #0f1115; color: inherit; border: 1px solid #2a2f3a; border-radius: 8px; padding: 10px; margin-bottom: 10px; font: inherit; }
+button { background: #7c5cff; color: #fff; border: 0; border-radius: 8px; padding: 8px 14px; font: inherit; cursor: pointer; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.secondary { background: transparent; border: 1px solid #3a4150; }
+.option { position: relative; display: grid; grid-template-columns: 1fr auto auto; gap: 12px; align-items: center; padding: 8px 10px; margin-bottom: 8px; border-radius: 8px; overflow: hidden; background: #0f1115; }
+.option > * { position: relative; }
+.bar { position: absolute !important; inset: 0 auto 0 0; background: #7c5cff33; }
+.badge { font-size: 12px; background: #3a4150; border-radius: 6px; padding: 2px 8px; vertical-align: middle; }
+.status { color: #9aa3b5; font-size: 14px; }
+footer { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; color: #9aa3b5; }

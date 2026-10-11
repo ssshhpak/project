@@ -1,0 +1,263 @@
+{
+  "version": "0.1.0",
+  "name": "voting",
+  "instructions": [
+    {
+      "name": "createPoll",
+      "docs": [
+        "Create a new poll (2-4 options). PDA: [\"poll\", authority, poll_id]."
+      ],
+      "accounts": [
+        {
+          "name": "poll",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "pollId",
+          "type": "u64"
+        },
+        {
+          "name": "question",
+          "type": "string"
+        },
+        {
+          "name": "options",
+          "type": {
+            "vec": "string"
+          }
+        }
+      ]
+    },
+    {
+      "name": "vote",
+      "docs": [
+        "Vote for an option. One wallet = one vote (VoteRecord PDA)."
+      ],
+      "accounts": [
+        {
+          "name": "poll",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "voteRecord",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "voter",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "optionIndex",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "closePoll",
+      "docs": [
+        "Close the poll. Only the author can do it."
+      ],
+      "accounts": [
+        {
+          "name": "poll",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Poll",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "pollId",
+            "type": "u64"
+          },
+          {
+            "name": "question",
+            "type": "string"
+          },
+          {
+            "name": "options",
+            "type": {
+              "vec": "string"
+            }
+          },
+          {
+            "name": "votes",
+            "type": {
+              "vec": "u64"
+            }
+          },
+          {
+            "name": "totalVotes",
+            "type": "u64"
+          },
+          {
+            "name": "isClosed",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VoteRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "poll",
+            "type": "publicKey"
+          },
+          {
+            "name": "voter",
+            "type": "publicKey"
+          },
+          {
+            "name": "optionIndex",
+            "type": "u8"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [],
+  "events": [
+    {
+      "fields": [
+        {
+          "index": false,
+          "name": "poll",
+          "type": "publicKey"
+        },
+        {
+          "index": false,
+          "name": "totalVotes",
+          "type": "u64"
+        }
+      ],
+      "name": "PollClosed"
+    },
+    {
+      "fields": [
+        {
+          "index": false,
+          "name": "poll",
+          "type": "publicKey"
+        },
+        {
+          "index": false,
+          "name": "authority",
+          "type": "publicKey"
+        },
+        {
+          "index": false,
+          "name": "pollId",
+          "type": "u64"
+        }
+      ],
+      "name": "PollCreated"
+    },
+    {
+      "fields": [
+        {
+          "index": false,
+          "name": "poll",
+          "type": "publicKey"
+        },
+        {
+          "index": false,
+          "name": "voter",
+          "type": "publicKey"
+        },
+        {
+          "index": false,
+          "name": "optionIndex",
+          "type": "u8"
+        }
+      ],
+      "name": "VoteCast"
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "PollClosed",
+      "msg": "Poll is closed"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidOption",
+      "msg": "Invalid option index"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidOptionsCount",
+      "msg": "A poll must have between 2 and 4 options"
+    },
+    {
+      "code": 6003,
+      "name": "QuestionTooLong",
+      "msg": "Question is too long (max 100 bytes)"
+    },
+    {
+      "code": 6004,
+      "name": "OptionTooLong",
+      "msg": "Option text is too long (max 32 bytes)"
+    },
+    {
+      "code": 6005,
+      "name": "Unauthorized",
+      "msg": "Only the poll author can do this"
+    },
+    {
+      "code": 6006,
+      "name": "Overflow",
+      "msg": "Arithmetic overflow"
+    }
+  ]
+}
